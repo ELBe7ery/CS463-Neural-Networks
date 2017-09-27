@@ -35,5 +35,8 @@ def init_data(num_samples=5000, num_test=500, cifar10_dir='cifar-10-batches-py')
     # let the 500 img objects stored in a 1D array i.e. 500 element/arr each of 32x32x3=3072 item
     x_test = np.reshape(x_test, (x_test.shape[0], -1))
 
+    # classes as seen in the cifar data set
+    classes = np.array(['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog'\
+    , 'horse', 'ship', 'truck'])
     #return reshapped data
-    return x_train, y_train, x_test, y_test
+    return x_train, y_train, x_test, y_test, classes
