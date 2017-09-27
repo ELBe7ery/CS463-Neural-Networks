@@ -3,8 +3,8 @@ Preprocessing script that will load tha cifar-10 data set
 """
 
 import numpy as np
+
 from data_utils import load_CIFAR10
-import matplotlib.pyplot as plt
 
 
 def init_data(num_samples=5000, num_test=500, cifar10_dir='cifar-10-batches-py'):
@@ -15,9 +15,9 @@ def init_data(num_samples=5000, num_test=500, cifar10_dir='cifar-10-batches-py')
      num_test : the number of test items [the un-seen test items] taken from the dataset
                 that will be used to test our classifier
      cifar10_dir : the directory contains the cifar dataset
-     
+
     returns:
-     array of <num_samples> items each of (32x32x3) ints representing pixles 
+     array of <num_samples> items each of (32x32x3) ints representing pixles
      that is reshaped into a 1D array
     """
     # load the whole data-set
@@ -37,4 +37,3 @@ def init_data(num_samples=5000, num_test=500, cifar10_dir='cifar-10-batches-py')
 
     #return reshapped data
     return x_train, y_train, x_test, y_test
-
