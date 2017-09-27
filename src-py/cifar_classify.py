@@ -51,11 +51,12 @@ class KNN(object):
         plt.imshow(self.x_test[test_id].reshape((32, 32, 3)).astype('uint8'))
         plt.show()
 
-    def classify(self, test_id):
+    def classify(self, test_id, view=False):
         """
         Predict an image given its dataset index
         args:
          test_id : the test data set index to test
+         view : plot the image shape
         returns :
          class_name : a string representing the predicted class
         """
@@ -64,7 +65,8 @@ class KNN(object):
         # take the k low nearest results
         sub_arr = sub_arr.argsort()[:self.num_k]
         # increment the repreated classes by 1 in the score array
-        np.add.at(score_arr, self.x_test[sub_arr],  1)
-
+        np.add.at(score_arr, self.y_train[sub_arr], 1)
+        if view: 
+            self.show_from_test(test_id)
         # take the highest scrore
-        return self.classes[sub_arr.argsort[-1]]
+        return self.classes[score_arr.argsort()[-1]]
