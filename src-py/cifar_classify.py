@@ -20,6 +20,9 @@ class KNN(object):
             self.y_train : the lables of the training data
             x_test : array of 1D pixles of length num_samples,
                      representing the un-seen data to test the model
+            num_samples : the number of training items
+            num_test : the number of test items
+            dist_arr : the array of distances for all test images wrt to all the training images
             y_test : test data lables
     """
 
@@ -35,6 +38,9 @@ class KNN(object):
         """
         import cifar_init
         self.num_k = num_k
+        self.num_samples = num_samples
+        self.num_test = num_test
+        self.dist_arr = None
         self.x_train, self.y_train, self.x_test, self.y_test, self.classes \
             = cifar_init.init_data(num_samples, num_test, dataset_dir)
 
@@ -58,6 +64,7 @@ class KNN(object):
          class_name : a string representing the predicted class
         """
         score_arr = np.array([0]*(self.classes.size))
+        # calculate the distance matrix by (self.x_train-self.x_test[test_id]) ** 2
         sub_arr = np.sqrt(np.sum((self.x_train-self.x_test[test_id]) ** 2, axis=1))
         # take the k low nearest results
         sub_arr = sub_arr.argsort()[:self.num_k]
@@ -86,3 +93,51 @@ class KNN(object):
         if view_console:
             print ret
         return ret
+
+    def calc_dist_test(self):
+        """
+        Calculates the whole distance of all the test items with respect
+        to all the training data set.
+
+        If n is the length of the training items, m is the length of the test items
+        we need to return an nxm array where elements at row i and col j represent the
+        distance of test item j from training item i.
+        The code follow the equation of sum((test-train)**2) = sum(test**2) + sum(train**2) - 2*test*train`
+
+        All the matricies in the above equation should be reshaped to be all n*m
+        so since
+         sum(test**2) will return n*1 matrix, we will replicate it m times  => n*m
+         sum(test**2) will return m*1 matrix, we will transpose it => 1*m
+          and replicate it n times n*m
+         -2*test*train` will multiply n*m by n*m
+           resulting in an n*m matrix
+
+        return:
+         array of size len(train)*len(test) such that the elements
+         of row x represent all the test distanes from the training sample x
+        """
+        # a matrix of 1*m representing the sum of pixles of each item @ the test set
+        sigma_test_pwr2 = np.sum(self.x_test**2, axis=1)
+
+        # repeate this matrix n times
+        sigma_test_pwr2 = np.tile(sigma_test_pwr2, (self.num_samples, 1))  # now sum(test**2) is an n*m matrix
+        
+        # a matrix of n*1 representing the sum of pixles of each item @ the training set
+        sigma_train_pwr2 = np.sum(self.x_train**2, axis=1).reshape((self.num_samples, 1))
+
+        # repeate this matrix m times
+        sigma_train_pwr2 = np.tile(sigma_train_pwr2, (1, self.num_test))    # now sum(train**2) is an n*m matrix
+
+        n_two_a_dot_b = -2 * self.x_train.dot(self.x_test.T)
+
+        self.dist_arr = np.sqrt(sigma_train_pwr2 + sigma_test_pwr2 + n_two_a_dot_b)
+        None
+
+    def calc_acc(self):
+        """
+        calculates the accuracy, hopefully faster
+        works at self.dist_arr n*m matrix
+        """
+        self.calc_dist_test()
+
+        #for i in range()

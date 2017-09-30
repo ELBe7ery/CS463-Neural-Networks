@@ -11,6 +11,7 @@ MY_CLF = cifar_classify.KNN(NUM_K, dataset_dir=DATASET_DIR)
 
 ### RANDOM TEST CASES
 
-for i in range(5, 70, 7):
-    print MY_CLF.classify(i, debug=True)
+# for i in range(5, 70, 7):
+#     print MY_CLF.classify(i, debug=True)
 
+MY_CLF.calc_dist_test()
