@@ -1,0 +1,8 @@
+1 dog
+2 cat
+3 car
+4 motorbike
+5 man
+6 child
+7 door
+8 window
