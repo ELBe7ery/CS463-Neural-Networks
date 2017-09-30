@@ -11,4 +11,5 @@ The repository contains all the projects that i have made during the class. Each
 
 Project | branch name and git command| Comments 
 --- | --- | ---
+notebooks<br/>Till lab 2 | `git checkout notebook` | 
 K nearest neighbors classifier | `git checkout KNN` | A classifier built around the KNN algorithm operated on the cifar-10 data set
