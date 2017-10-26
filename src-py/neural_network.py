@@ -1,0 +1,4 @@
+"""
+Neural network class
+"""
+
