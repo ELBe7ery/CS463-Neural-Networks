@@ -13,4 +13,4 @@ Project | branch name and git command| Comments
 --- | --- | ---
 notebooks<br/>Till lab 2 | `git checkout notebook` | 
 K nearest neighbors classifier | `git checkout KNN` | A classifier built around the KNN algorithm operated on the cifar-10 data set
-Feed-forward neural network | `git branch ffnn` | A neural network based classifier for the cifar-10 data set
+Feed-forward neural network | `git checkout ffnn` | A neural network based classifier for the cifar-10 data set
