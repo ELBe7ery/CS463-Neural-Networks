@@ -3,7 +3,7 @@ Neural network layer class
 
 Dependencies
 -  Numpy
--  activation_functions
+-  activation_functions.py
 """
 import numpy as np
 import activation_functions as actf
