@@ -28,13 +28,13 @@ class Layer(object):
     -    f_act
     -    f_act_d
     -    weight_matrix
-    -    bias_vector
     -    input_vector
     -    out_vector
     -    delta_vector
+    -    eta
     """
     def __init__(self, num_neurons, num_inputs, f_act=actf.sigmoid,
-                 f_act_d=actf.sigmoid_d, out_neuron=False, eta = 0.001):
+                 f_act_d=actf.sigmoid_d, eta = 0.02):
         """
         Creates a neural network layer
         """
@@ -42,16 +42,15 @@ class Layer(object):
         self.f_act_d = f_act_d
         self.eta = eta
 
-        #create a randomly intiallized weight, bias and net matrices
-        self.weight_matrix = np.random.ranf([num_neurons, num_inputs])
-        self.bias_vector = np.random.ranf([num_neurons, 1])
+        #create a randomly intiallized weight and net matrices
+        self.weight_matrix = np.random.ranf([num_neurons, num_inputs+1]) #+1 for bias input at col 0
         self.net = np.zeros([num_neurons, 1])
 
         # create delta matrix, one delta per neuron
         self.delta_vector = np.zeros([num_neurons, 1])
 
         # create the input, output vectors
-        self.input_vector = np.zeros([num_inputs, 1])
+        self.input_vector = np.zeros([num_inputs+1, 1]) #+1 for bias input of one at row 0
         self.out_vector = np.zeros([num_neurons, 1])
 
     def fwd_pass(self, in_vect):
@@ -60,15 +59,16 @@ class Layer(object):
         ### args
         -    in_vect : a float vector for the inputs to probe on the layer an Nx1 vector
         """
-        self.input_vector = in_vect
+        self.input_vector[0,0] = 1
+        self.input_vector[1:,0] = in_vect.T
         # mac output
-        self.net = np.dot(self.weight_matrix, self.input_vector) + self.bias_vector
+        self.net = np.dot(self.weight_matrix, self.input_vector)
         # apply f_act
         self.out_vector = self.f_act(self.net)
 
     def calc_delta_out(self, target_vect):
         """
-        Internal function for calculating the delta terms of the output layer
+        Calculate the delta terms of the output layer
         ### args
         - target_vect : desired output, taken from the data-set label
         """
@@ -76,11 +76,12 @@ class Layer(object):
 
     def calc_delta_hidden(self, succ_layer):
         """
-        Internal function for calculating the delta terms of the hidden layers
+        Calculate the delta terms of the hidden layers
         ### args
         - past_layer : the succ. layer object
         """
-        self.delta_vector = np.dot(succ_layer.weight_matrix.T, succ_layer.delta_vector)*self.f_act_d(self.net)
+        self.delta_vector = np.dot(succ_layer.weight_matrix[:,1:].T,
+                                   succ_layer.delta_vector)*self.f_act_d(self.net)
 
 
     def update_weights(self):
@@ -88,4 +89,4 @@ class Layer(object):
         updates all the weights of the neural network
         """
         # broadcast
-        self.weight_matrix += self.delta_vector*self.input_vector.T
+        self.weight_matrix += self.eta*self.delta_vector*self.input_vector.T
