@@ -66,5 +66,5 @@ class FFNN(object):
         for i in range(len(self.layers)):
             self.layers[i].update_weights()
 
-        if(debug):
+        if debug:
             print "New weights @input layer: \n", self.layers[0].weight_matrix
