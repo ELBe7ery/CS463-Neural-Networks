@@ -2,18 +2,18 @@
 Just for testing
 """
 
-import neural_network
+import Layer
 import numpy as np
 import activation_functions
 
 
 
 
-nn = neural_network.Layer(3, 2)
+nn = Layer.Layer(3, 2)
 nn.weight_matrix = np.ones([3,3])
 nn.weight_matrix[:,1:] = 0.77
 nn.weight_matrix[:,0] = 0.67
-output_layer = neural_network.Layer(3, 3)
+output_layer = Layer.Layer(3, 3)
 output_layer.weight_matrix = 0.5*np.ones([3,4])
 
 
