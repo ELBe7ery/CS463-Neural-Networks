@@ -67,14 +67,14 @@ net.layers[0].weight_matrix[:,0] = 0.67
 
 net.layers[1].weight_matrix = 0.5*np.ones([3,4])
 
-net.probe_input(input_vector, debug = False)
 
+net.probe_input(input_vector, debug = False)
 net.err_bp(np.ones([3,1]), debug=False)
 
-#net.probe_input(input_vector)
+net.probe_input(input_vector)
+net.err_bp(np.ones([3,1]))
 
-#net.err_bp(np.ones([3,1]))
-# net.probe_input(input_vector)
-# net.err_bp(np.ones([3,1]), debug=False)
+net.probe_input(input_vector)
+net.err_bp(np.ones([3,1]), debug=False)
 
 net.probe_input(input_vector, debug=True)
