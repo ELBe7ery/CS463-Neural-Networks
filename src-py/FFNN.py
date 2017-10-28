@@ -25,13 +25,13 @@ class FFNN(object):
       the input layer is not included here instead the inputs are probed into the first hidden layer
     """
 
-    def __init__(self, layers_structure):
+    def __init__(self, layers_structure, batch=1):
         """
         Creates the layers, connectes them
         """
 
         #creates a chain of layers
-        self.layers = [Layer(layers_structure[i], layers_structure[i-1])
+        self.layers = [Layer(layers_structure[i], layers_structure[i-1], batch_size=batch)
                        for i in range(1, len(layers_structure))]
 
     def probe_input(self, in_vect, debug=False):
