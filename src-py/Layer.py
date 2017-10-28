@@ -14,24 +14,24 @@ class Layer(object):
     Implements a FULLY CONNECTED layer object, the neural network is defined
     as a chain of layers.
     ### args
-    -    num_neurons : an int scaler value representing number of neurons,
-            num row of the weight matrix
-    -    num_inputs : an int scaler value representing the number of the inputs [or] neurons,
-         num col of the weight matrix at the previous layer
-    -    f_act : the activation function of all the neurons at the layer
-    -    f_act_d : the derivative of the activation funct.
-    -    out_neuron : flag specifing wheather this is an output neuron
-         [useful for calculating delta]
-    -    eta : learning rate
+        -    num_neurons : an int scaler value representing number of neurons,
+                num row of the weight matrix
+        -    num_inputs : an int scaler value representing the number of the inputs [or] neurons,
+            num col of the weight matrix at the previous layer
+        -    f_act : the activation function of all the neurons at the layer
+        -    f_act_d : the derivative of the activation funct.
+        -    out_neuron : flag specifing wheather this is an output neuron
+            [useful for calculating delta]
+        -    eta : learning rate
 
     ### attributes
-    -    f_act
-    -    f_act_d
-    -    weight_matrix
-    -    input_vector
-    -    out_vector
-    -    delta_vector
-    -    eta
+        -    f_act
+        -    f_act_d
+        -    weight_matrix
+        -    input_vector
+        -    out_vector
+        -    delta_vector
+        -    eta
     """
     def __init__(self, num_neurons, num_inputs, f_act=actf.sigmoid,
                  f_act_d=actf.sigmoid_d, eta = 0.16):
