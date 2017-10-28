@@ -68,3 +68,15 @@ class FFNN(object):
 
         if debug:
             print "New weights @input layer: \n", self.layers[0].weight_matrix
+
+    def train_step(self, in_vect, target_out_vect):
+        """
+        A single training step, accepts a batch of inputs or a single input
+
+        ### args
+            - in_vect : a col of inputs, a batch contains multiple cols
+            - target_out_vect : desired output vector, a column of output. A batch contains multipl
+            cols
+        """
+        self.probe_input(in_vect)
+        self.err_bp(target_out_vect)
