@@ -1,4 +1,4 @@
-# CS463 Neural Networks
+# CSE463 Neural Networks
 
 The repository contains all the projects that i have made during the class. Each project has **Its own branch** 
 
