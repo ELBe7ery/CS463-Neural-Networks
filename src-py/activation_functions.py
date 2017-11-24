@@ -31,3 +31,13 @@ def sigmoid_d(vect):
     """
     s = sigmoid(vect)
     return s*(1-s)
+
+def soft_max(vect):
+    """
+    A vector softmax function
+    args :
+        vect : a vector of floats
+    returns:
+        ret : array of exp(v[i])/sum(exp(v[i]))
+    """
+    return np.exp(vect)/np.sum(np.exp(vect))
