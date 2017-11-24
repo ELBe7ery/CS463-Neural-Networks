@@ -16,23 +16,24 @@ class FFNN(object):
     the training algorithm used is the error back-propagation with gradient descent
 
     ### args
-    - layers_structure : a vector of ints that contain the number of neurons of each layer
+    + layers_structure : a vector of ints that contain the number of neurons of each layer
     the number of ints represents the number of layers
     e.g. [input_layer, hidd_1, hidd2, ... hidd_n, out]
 
     ### attributes
-    - layers : All the **hidden layers** and the **output layer**,
+    + layers : All the **hidden layers** and the **output layer**,
       the input layer is not included here instead the inputs are probed into the first hidden layer
     """
 
-    def __init__(self, layers_structure, batch=1):
+    def __init__(self, layers_structure, batch=1, eta=0.1, cost_funct='mse'):
         """
         Creates the layers, connectes them
         """
-
         #creates a chain of layers
-        self.layers = [Layer(layers_structure[i], layers_structure[i-1], batch_size=batch)
+        self.layers = [Layer(layers_structure[i], layers_structure[i-1], batch_size=batch, eta=eta)
                        for i in range(1, len(layers_structure))]
+        # set the output layer cost function
+        self.layers[-1].cost_funct = cost_funct
 
     def probe_input(self, in_vect, debug=False):
         """
@@ -51,7 +52,7 @@ class FFNN(object):
     def err_bp(self, target_out_vect, debug=False):
         """
         Back propagates the error given the target values from the data-set
-        
+   
         ### args
         - target_out_vect : the target values for the output neurons
         """
@@ -61,7 +62,7 @@ class FFNN(object):
         for i in range(2, len(self.layers)+1):
             # back-propagate the error succ. layer by layer
             self.layers[-i].calc_delta_hidden(self.layers[-i+1])
-        
+    
         # All the delta terms are calculated, update weights
         for i in range(len(self.layers)):
             self.layers[i].update_weights()
@@ -74,9 +75,9 @@ class FFNN(object):
         A single training step, accepts a batch of inputs or a single input
 
         ### args
-            - in_vect : a col of inputs, a batch contains multiple cols
-            - target_out_vect : desired output vector, a column of output. A batch contains multipl
-            cols
+        + in_vect : a col of inputs, a batch contains multiple cols
+        + target_out_vect : desired output vector, a column of output. A batch contains multipl
+        cols
         """
         self.probe_input(in_vect)
         self.err_bp(target_out_vect)

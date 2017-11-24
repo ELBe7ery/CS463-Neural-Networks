@@ -15,30 +15,32 @@ class Layer(object):
     as a chain of layers. Each layer supports inserting multiple inputs at the same time
     for batch training. In case the argument batch_size is left, the layer assumes only one set of inputs
     otherwise the layer assumes multiple inputs [for batch training]
+
     ### args
-        -    num_neurons : an int scaler value representing number of neurons,
-                num row of the weight matrix
-        -    num_inputs : an int scaler value representing the number of the inputs [or] neurons,
-            num col of the weight matrix at the previous layer
-        -    f_act : the activation function of all the neurons at the layer
-        -    f_act_d : the derivative of the activation funct.
-        -    out_neuron : flag specifing wheather this is an output neuron
-            [useful for calculating delta]
-        -    eta : learning rate
-        -    batch_size : the batch size, specifies the number of cols at the input vector
+    + num_neurons : an int scaler value representing number of neurons,
+    num row of the weight matrix
+    + num_inputs : an int scaler value representing the number of the inputs [or] neurons,
+    num col of the weight matrix at the previous layer
+    + f_act : the activation function of all the neurons at the layer
+    + f_act_d : the derivative of the activation funct.
+    + out_neuron : flag specifing wheather this is an output neuron
+    [useful for calculating delta]
+    + eta : learning rate
+    + batch_size : the batch size, specifies the number of cols at the input vector
+    + cost_funct : the cost function if the layer is an output layer [mse: mean sqr err, ce: cross entropy with softmax]
 
     ### attributes
-        -    f_act
-        -    f_act_d
-        -    weight_matrix
-        -    input_vector
-        -    out_vector
-        -    delta_vector
-        -    eta
-        -    batch_size
+    + f_act
+    + f_act_d
+    + weight_matrix
+    + input_vector
+    + out_vector
+    + delta_vector
+    + eta
+    + batch_size
     """
     def __init__(self, num_neurons, num_inputs, f_act=actf.sigmoid,
-                 f_act_d=actf.sigmoid_d, eta=0.16, batch_size=1):
+                 f_act_d=actf.sigmoid_d, eta=0.16, batch_size=1, cost_funct='mse'):
         """
         Creates a neural network layer
         """
@@ -46,6 +48,7 @@ class Layer(object):
         self.f_act_d = f_act_d
         self.eta = eta
         self.batch_size = batch_size
+        self.cost_funct = cost_funct
 
         #create a randomly intiallized weight and net matrices
         self.weight_matrix = np.random.ranf([num_neurons, num_inputs+1]) #+1 for bias input at col 0
@@ -86,7 +89,14 @@ class Layer(object):
         ### args
         - target_vect : desired output, taken from the data-set label
         """
-        self.delta_vector = (target_vect - self.out_vector)*self.f_act_d(self.net)#*self.input_vector.T
+        if self.cost_funct == 'mse':
+            # mean squared error output delta calculation
+            self.delta_vector = (target_vect - self.out_vector)*self.f_act_d(self.net)#*self.input_vector.T
+        elif self.cost_funct == 'ce':
+            # cross entropy error output delta calculation
+            self.delta_vector = (target_vect - self.out_vector)
+        # Future : support different error functions
+        
 
     def calc_delta_hidden(self, succ_layer):
         """
