@@ -4,7 +4,7 @@ Just for testing
 
 import FFNN
 import numpy as np
-
+import activation_functions as actf
 
 
 
@@ -52,29 +52,42 @@ import numpy as np
 
 # print nn.delta_vector
 
-input_vector = np.array([[1,1], [2,2]]).reshape(2,2)
+# input_vector = np.array([[1,1], [2,2]]).reshape(2,2)
 
-net = FFNN.FFNN([2, 3, 3], batch=2)
+# net = FFNN.FFNN([2, 3, 3], batch=2)
 
-# input_vector = np.array([[1,2]]).reshape(2,1)
+# # input_vector = np.array([[1,2]]).reshape(2,1)
 
-# net = FFNN.FFNN([2, 3, 3], batch=1)
+# # net = FFNN.FFNN([2, 3, 3], batch=1)
+
+# # adjust by hand :(
+# net.layers[0].weight_matrix = np.ones([3,3])
+# net.layers[0].weight_matrix[:,1:] = 0.77
+# net.layers[0].weight_matrix[:,0] = 0.67
+
+# net.layers[1].weight_matrix = 0.5*np.ones([3,4])
+
+
+# net.probe_input(input_vector, debug = False)
+# net.err_bp(np.ones([3,2]), debug=False)
+
+# net.probe_input(input_vector)
+# net.err_bp(np.ones([3,2]))
+
+# net.probe_input(input_vector)
+# net.err_bp(np.ones([3,2]), debug=False)
+
+# net.probe_input(input_vector, debug=True)
+
+input_vector = np.array([[1,1]]).reshape(2,1)
+net = FFNN.FFNN([2, 3, 3], eta=2, cost_funct='ce')
 
 # adjust by hand :(
-net.layers[0].weight_matrix = np.ones([3,3])
-net.layers[0].weight_matrix[:,1:] = 0.77
-net.layers[0].weight_matrix[:,0] = 0.67
-
+net.layers[0].weight_matrix = 0.5*np.ones([3,3])
 net.layers[1].weight_matrix = 0.5*np.ones([3,4])
-
-
-net.probe_input(input_vector, debug = False)
-net.err_bp(np.ones([3,2]), debug=False)
-
-net.probe_input(input_vector)
-net.err_bp(np.ones([3,2]))
-
-net.probe_input(input_vector)
-net.err_bp(np.ones([3,2]), debug=False)
-
-net.probe_input(input_vector, debug=True)
+net.layers[-1].f_act = actf.soft_max
+net.probe_input(input_vector, debug = True)
+net.err_bp(np.array([1, 0, 0]).reshape([3,1]), True)
+net.probe_input(input_vector, debug = True)
+#net.err_bp(np.array([1, 0, 0]).reshape([3,1]), True)
+net.probe_input(input_vector, debug = True)
