@@ -51,7 +51,7 @@ class Layer(object):
         self.cost_funct = cost_funct
 
         #create a randomly intiallized weight and net matrices
-        self.weight_matrix = 1e-3*np.random.ranf([num_neurons, num_inputs+1]) #+1 for bias input at col 0
+        self.weight_matrix = np.random.normal(0, 1e-2,[num_neurons, num_inputs+1])#np.random.ranf([num_neurons, num_inputs+1]) #+1 for bias input at col 0
         self.net = np.zeros([num_neurons, 1])
 
         # create delta matrix, one delta per neuron
@@ -72,7 +72,7 @@ class Layer(object):
         -    in_vect : a float vector for the inputs to probe on the layer an Nx1 vector
         """
         # set all the zero rows to one -> for bias input embedded within weight matrix
-        self.input_vector[0, :] = 1
+        self.input_vector[0, :] = 1#1
         # set all the input(s) starting from row 1 for all the cols [for batch]
         self.input_vector[1:, :] = in_vect#.T
 
@@ -114,7 +114,7 @@ class Layer(object):
         """
         # broadcast
         # Sum the inputs in case of batch training
-        self.weight_matrix -= 1.0/self.batch_size*self.eta*np.dot(self.delta_vector, self.input_vector.T)
+        self.weight_matrix += 1.0/self.batch_size*self.eta*np.dot(self.delta_vector, self.input_vector.T)
         #np.sum(self.delta_vector*self.input_vector.T, axis=1, keepdims=True)
         #np.sum(self.delta_vector, axis=1, keepdims=True)*\
                                               #np.sum(self.input_vector, axis=1, keepdims=True).T

@@ -50,7 +50,7 @@ class FFNN(object):
         for i in range(1, len(self.layers)):
             self.layers[i].fwd_pass(self.layers[i-1].out_vector)
         if debug:
-            print "Output layer : \n", self.layers[-1].out_vector
+            print ("Output layer : \n", self.layers[-1].out_vector)
 
     def err_bp(self, target_out_vect, debug=False):
         """
@@ -71,7 +71,7 @@ class FFNN(object):
             self.layers[i].update_weights()
 
         if debug:
-            print "New weights @input layer: \n", np.sum(self.layers[0].weight_matrix)
+            print ("New weights @input layer: \n", np.sum(self.layers[0].weight_matrix))
 
     def train_step(self, in_vect, target_out_vect):
         """
@@ -84,6 +84,7 @@ class FFNN(object):
         """
         self.probe_input(in_vect)
         self.err_bp(target_out_vect)
+        #print "WTF: ", np.argmax(self.layers[-1].out_vector, axis=0)
     
     def test_acc(self, input_vect, target_out_vect):
         """
@@ -98,8 +99,5 @@ class FFNN(object):
         + ret : the amount of correct classified classes
         """
         self.probe_input(input_vect)
-        #print "WTF: ", np.argmax(self.layers[-1].out_vector[:,5]), np.argmin(self.layers[-1].out_vector[:,5])
-        #print "WTF: ", np.argmax(self.layers[-1].out_vector, axis=0), np.argmax(target_out_vect, axis=0)
         ret = np.sum(np.argmax(self.layers[-1].out_vector, axis=0) == np.argmax(target_out_vect, axis=0))
-        #print ret
         return ret
