@@ -79,15 +79,24 @@ import activation_functions as actf
 
 # net.probe_input(input_vector, debug=True)
 
-input_vector = np.array([[1,1]]).reshape(2,1)
-net = FFNN.FFNN([2, 3, 3], eta=2, cost_funct='ce')
+input_vector = np.array([[1,2], [3,4]]).T #np.array([[1,1]]).reshape(2,1) #np.array([[1,1], [1,1]]).reshape(2,2) #np.array([[21,11]]).reshape(2,2)
+out_data = np.array([[1,0,0],[0,1,0]]).T
+net = FFNN.FFNN([2, 3, 3], eta=1e-1, cost_funct='ce', batch=2)
 
 # adjust by hand :(
 net.layers[0].weight_matrix = 0.5*np.ones([3,3])
 net.layers[1].weight_matrix = 0.5*np.ones([3,4])
-net.layers[-1].f_act = actf.soft_max
-net.probe_input(input_vector, debug = True)
-net.err_bp(np.array([1, 0, 0]).reshape([3,1]), True)
-net.probe_input(input_vector, debug = True)
-#net.err_bp(np.array([1, 0, 0]).reshape([3,1]), True)
-net.probe_input(input_vector, debug = True)
+# #net.layers[-1].f_act = actf.soft_max
+# net.probe_input(input_vector, debug = False)
+# net.err_bp(np.array([1, 0, 0]).reshape([3,1]))
+
+# net.probe_input(input_vector, debug = False)
+# net.err_bp(np.array([1, 0, 0]).reshape([3,1]))
+
+# net.probe_input(input_vector, debug = True)
+
+
+for i in range(1001):
+    net.train_step(input_vector, out_data)
+
+print net.layers[-1].out_vector

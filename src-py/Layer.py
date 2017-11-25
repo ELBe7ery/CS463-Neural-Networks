@@ -51,7 +51,7 @@ class Layer(object):
         self.cost_funct = cost_funct
 
         #create a randomly intiallized weight and net matrices
-        self.weight_matrix = np.random.ranf([num_neurons, num_inputs+1]) #+1 for bias input at col 0
+        self.weight_matrix = 1e-3*np.random.ranf([num_neurons, num_inputs+1]) #+1 for bias input at col 0
         self.net = np.zeros([num_neurons, 1])
 
         # create delta matrix, one delta per neuron
@@ -94,7 +94,7 @@ class Layer(object):
             self.delta_vector = (target_vect - self.out_vector)*self.f_act_d(self.net)#*self.input_vector.T
         elif self.cost_funct == 'ce':
             # cross entropy error output delta calculation
-            self.delta_vector = (target_vect - self.out_vector)
+            self.delta_vector = (target_vect - self.out_vector) #(target_vect - self.out_vector)
         # Future : support different error functions
         
 
@@ -114,7 +114,7 @@ class Layer(object):
         """
         # broadcast
         # Sum the inputs in case of batch training
-        self.weight_matrix += 1.0/self.batch_size*self.eta*np.dot(self.delta_vector, self.input_vector.T)
+        self.weight_matrix -= 1.0/self.batch_size*self.eta*np.dot(self.delta_vector, self.input_vector.T)
         #np.sum(self.delta_vector*self.input_vector.T, axis=1, keepdims=True)
         #np.sum(self.delta_vector, axis=1, keepdims=True)*\
                                               #np.sum(self.input_vector, axis=1, keepdims=True).T

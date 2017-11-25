@@ -40,4 +40,8 @@ def soft_max(vect):
     returns:
         ret : array of exp(v[i])/sum(exp(v[i]))
     """
-    return np.exp(vect)/np.sum(np.exp(vect))
+#    return np.exp(vect)/np.sum(np.exp(vect))
+    ## safe exp:
+    vect = np.exp(vect - np.max(vect))
+    ret = vect/vect.sum() #np.exp(vect)/np.sum(np.exp(vect))
+    return ret

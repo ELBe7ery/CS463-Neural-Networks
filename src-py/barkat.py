@@ -18,11 +18,11 @@ EPOCHS = 30
 # each iteration use a batch of 500 items
 BATCH_SIZE = 1 #10#100#50
 # learning rate 1e-1
-LR = 0.01 #1e-2
+LR = 1e-1
 
 # create NN object with 2 hidden layers
 # batch size : 500, learning rate : 1e-1
-NN = FFNN([3072, 50, 50, 10], batch=BATCH_SIZE, eta=LR, cost_funct='ce')
+NN = FFNN([3072, 50, 50, 10], batch=BATCH_SIZE, eta=LR, cost_funct='mse')
 ################################
 
 DATASET_DIR = 'F:\\Handasa\\Computer\\4th 7asbat\\Neural Networks\\labs\\KNN\\cifar-10-batches-py'
@@ -44,7 +44,7 @@ for i in range(EPOCHS):
     acc = 0.0
     for jj in range(0,TEST_SIZE,BATCH_SIZE):
         #X_VALID  X_TRAIN
-        acc += NN.test_acc(X_TRAIN[jj:jj+BATCH_SIZE,:].T, Y_TRAIN[jj:jj+BATCH_SIZE,:].T)
+        acc += NN.test_acc(X_TEST[jj:jj+BATCH_SIZE,:].T, Y_TEST[jj:jj+BATCH_SIZE,:].T)
         #idx = np.random.randint(0,TEST_SIZE-BATCH_SIZE)
         #acc += NN.test_acc(X_TEST[idx:idx+BATCH_SIZE,:].T, Y_TEST[idx:idx+BATCH_SIZE,:].T)
 

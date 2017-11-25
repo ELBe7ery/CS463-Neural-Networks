@@ -38,4 +38,19 @@ def init_data(num_samples=5000, num_test=500, cifar10_dir='cifar-10-batches-py')
     classes = np.array(['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog'\
     , 'horse', 'ship', 'truck'])
     #return reshapped data
-    return x_train, y_train, x_test, y_test, classes
+    return x_train/255.0, y_train, x_test/255.0, y_test, classes
+
+# def correct_classes(net_out, target_out):
+#     """
+#     Returns the number of the correct classified items
+#     for the cifar-10 dataset. It supports batch calculation
+
+#     args:
+#     + net_out : the neural network output when the test/valid data is probed
+#     + target_out : the neural network desired output for the current input(s)
+
+#     returns:
+#     + ret : the amount of correct classified classes
+#     """
+#     ret = np.sum(np.argmax(net_out, axis=1) == np.argmax(target_out, axis=1))
+#     return ret
