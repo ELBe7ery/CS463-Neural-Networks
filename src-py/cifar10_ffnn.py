@@ -66,7 +66,7 @@ def test_nn(num_epochs=25, eta=1e-1, batch_size=128, hidden_neurons=50):
     model.compile(loss="binary_crossentropy", optimizer=sgd, metrics=["categorical_accuracy"])
 
     # show the progress during iteration
-    history = model.fit(x_train, y_train, epochs=num_epochs, batch_size=batch_size, verbose=0, validation_data=(x_valid, y_valid))
+    history = model.fit(x_train, y_train, epochs=num_epochs, batch_size=batch_size, verbose=1, validation_data=(x_valid, y_valid))
     pylab.plot(history.history['val_categorical_accuracy'])
     pylab.plot(history.history['categorical_accuracy'])
     pylab.legend(['Validation', 'Train'], loc='upper right')
@@ -84,9 +84,6 @@ def test_nn(num_epochs=25, eta=1e-1, batch_size=128, hidden_neurons=50):
 
     return  model.evaluate(x_test, y_test,batch_size=batch_size, verbose=0)
 
-hidden_unit_size = [2, 5, 10, 20, 50, 100]
-# a dictionary of index => num_neurons/layer that saves (err, acc)
-result_dict = {}
-for i in hidden_unit_size:
-    print ("Running with hidden unit size: ", str(i))
-    result_dict[i] = test_nn(num_epochs = 10, hidden_neurons=i)
+
+
+result_dict = test_nn(num_epochs = 10, batch_size=32, eta=2e-1, hidden_neurons=50)
